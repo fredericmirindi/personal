@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Economics Research Hub</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 4D Background Animation -->
+    <div class="background-4d">
+        <div class="hypercube-container">
+            <div class="hypercube"></div>
+        </div>
+        <div class="particle-system" id="particles"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="floating-nav" id="nav">
+        <div class="nav-logo">
+            <div class="logo-cube">AI</div>
+            <span>Economics Research</span>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="#home" class="nav-link active" data-page="home">Home</a></li>
+            <li><a href="#papers" class="nav-link" data-page="papers">Papers & Conferences</a></li>
+            <li><a href="#ai-economics" class="nav-link" data-page="ai-economics">AI in Economics</a></li>
+            <li><a href="#research" class="nav-link" data-page="research">Research</a></li>
+        </ul>
+        <button class="theme-toggle" id="themeToggle">
+            <span class="theme-icon">🌙</span>
+        </button>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Homepage -->
+        <section class="page active" id="home">
+            <div class="hero-section">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        <span class="gradient-text">Artificial Intelligence</span>
+                        <span class="morphing-text">meets Economics</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Exploring the intersection of AI and economic research through cutting-edge 4D visualizations and interactive experiences
+                    </p>
+                    <div class="hero-buttons">
+                        <button class="btn btn--primary btn--3d" data-page="ai-economics">
+                            <span>Explore AI Applications</span>
+                            <div class="btn-glow"></div>
+                        </button>
+                        <button class="btn btn--outline btn--3d" data-page="papers">
+                            <span>View Research</span>
+                            <div class="btn-glow"></div>
+                        </button>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="interactive-shape" id="heroShape">
+                        <div class="shape-layer"></div>
+                        <div class="shape-layer"></div>
+                        <div class="shape-layer"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="research-highlights">
+                <h2>Research Highlights</h2>
+                <div class="highlights-grid">
+                    <div class="highlight-card">
+                        <div class="card-icon">📊</div>
+                        <h3>AI Forecasting</h3>
+                        <p>AI models outperform traditional econometric forecasting by significant margins</p>
+                    </div>
+                    <div class="highlight-card">
+                        <div class="card-icon">🧠</div>
+                        <h3>Behavioral AI</h3>
+                        <p>Behavioral AI can identify and correct human cognitive biases in economic decisions</p>
+                    </div>
+                    <div class="highlight-card">
+                        <div class="card-icon">💾</div>
+                        <h3>Big Data Analysis</h3>
+                        <p>Machine learning enables analysis of previously impossible large-scale economic datasets</p>
+                    </div>
+                    <div class="highlight-card">
+                        <div class="card-icon">🎯</div>
+                        <h3>Policy Design</h3>
+                        <p>AI-driven personalization revolutionizing how economic policies are designed and implemented</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Papers & Conferences -->
+        <section class="page" id="papers">
+            <div class="container">
+                <h1 class="page-title">Papers & Conferences</h1>
+                
+                <div class="search-filter-bar">
+                    <div class="search-container">
+                        <input type="text" class="form-control search-input" placeholder="Search papers and conferences..." id="searchInput">
+                        <div class="search-icon">🔍</div>
+                    </div>
+                    <div class="filter-tags" id="filterTags"></div>
+                </div>
+
+                <div class="content-tabs">
+                    <button class="tab-btn active" data-tab="conferences">Conferences</button>
+                    <button class="tab-btn" data-tab="papers">Papers</button>
+                </div>
+
+                <div class="tab-content active" id="conferences">
+                    <div class="timeline">
+                        <div class="timeline-line"></div>
+                        <div id="conferencesList"></div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="papers-content">
+                    <div class="papers-grid" id="papersList"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI in Economics -->
+        <section class="page" id="ai-economics">
+            <div class="container">
+                <h1 class="page-title">AI Applications in Economics</h1>
+                
+                <div class="ai-dashboard">
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card interactive-demo">
+                            <h3>Economic Forecasting Simulator</h3>
+                            <div class="simulation-controls">
+                                <label class="form-label">GDP Growth Rate:</label>
+                                <input type="range" class="form-control" min="0" max="10" value="2.5" id="gdpSlider">
+                                <span id="gdpValue">2.5%</span>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="forecastChart" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-card">
+                            <h3>Behavioral Economics Model</h3>
+                            <div class="behavior-simulation">
+                                <div class="decision-scenario">
+                                    <p>Decision Scenario: Investment Choice</p>
+                                    <div class="choices">
+                                        <button class="choice-btn" data-choice="safe">Safe Investment (5% return)</button>
+                                        <button class="choice-btn" data-choice="risky">Risky Investment (15% return, 30% loss chance)</button>
+                                    </div>
+                                    <div class="ai-prediction" id="aiPrediction"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-card">
+                            <h3>Real-time Market Analysis</h3>
+                            <div class="market-data">
+                                <div class="metric">
+                                    <span class="metric-label">AI Accuracy:</span>
+                                    <span class="metric-value">280x</span>
+                                    <span class="metric-unit">improvement</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">AI Investment:</span>
+                                    <span class="metric-value">$109.1B</span>
+                                    <span class="metric-unit">in 2024</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Adoption Rate:</span>
+                                    <span class="metric-value">78%</span>
+                                    <span class="metric-unit">of organizations</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ai-applications-section">
+                    <h2>AI Application Categories</h2>
+                    <div class="applications-grid" id="applicationsGrid"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Research -->
+        <section class="page" id="research">
+            <div class="container">
+                <h1 class="page-title">Research Overview</h1>
+                
+                <div class="research-content">
+                    <div class="research-intro">
+                        <h2>About Our Research</h2>
+                        <p>Our research explores the transformative impact of artificial intelligence on economic theory and practice. We focus on developing innovative methodologies that bridge the gap between computational intelligence and economic understanding.</p>
+                    </div>
+
+                    <div class="methodology-section">
+                        <h2>Research Methodology</h2>
+                        <div class="methodology-grid">
+                            <div class="method-card">
+                                <h3>Machine Learning Models</h3>
+                                <p>Advanced neural networks and ensemble methods for economic prediction and analysis</p>
+                                <div class="footnote-trigger" data-footnote="ml-models">
+                                    <span class="footnote-number">1</span>
+                                </div>
+                            </div>
+                            <div class="method-card">
+                                <h3>Behavioral Analysis</h3>
+                                <p>AI-driven understanding of human decision-making patterns in economic contexts</p>
+                                <div class="footnote-trigger" data-footnote="behavioral">
+                                    <span class="footnote-number">2</span>
+                                </div>
+                            </div>
+                            <div class="method-card">
+                                <h3>Data Integration</h3>
+                                <p>Combining multiple data sources for comprehensive economic modeling</p>
+                                <div class="footnote-trigger" data-footnote="data-integration">
+                                    <span class="footnote-number">3</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footnotes System -->
+    <div class="footnotes-panel" id="footnotesPanel">
+        <div class="footnotes-content">
+            <button class="footnotes-close" id="footnotesClose">×</button>
+            <div class="footnote-item" id="ml-models">
+                <h4>Machine Learning Models</h4>
+                <p>Our research utilizes LSTM networks for time series analysis, Random Forest models for feature importance, and ensemble methods that combine multiple algorithms for robust predictions. These models have shown 280x improvement in cost efficiency since 2022.</p>
+            </div>
+            <div class="footnote-item" id="behavioral">
+                <h4>Behavioral Analysis</h4>
+                <p>Using AI to analyze behavioral patterns allows us to identify cognitive biases and design better decision architectures. This approach has been adopted by 78% of organizations for behavioral insights.</p>
+            </div>
+            <div class="footnote-item" id="data-integration">
+                <h4>Data Integration</h4>
+                <p>We combine traditional economic indicators with alternative data sources including social media sentiment, satellite imagery, and real-time transaction data to create comprehensive economic models.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footnote Hover Popup -->
+    <div class="footnote-popup" id="footnotePopup">
+        <div class="popup-content"></div>
+        <div class="popup-arrow"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
