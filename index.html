@@ -1,258 +1,285 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Economics Research Hub</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>Frédéric Mirindi – 4D Academic Portfolio</title>
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="app.js"></script>
+  <!-- 4D Enhancement Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
-<body>
-    <!-- 4D Background Animation -->
-    <div class="background-4d">
-        <div class="hypercube-container">
-            <div class="hypercube"></div>
-        </div>
-        <div class="particle-system" id="particles"></div>
+
+<body data-scroll-container>
+  <!-- 4D Particle Background -->
+  <canvas id="particle-canvas" class="particle-background"></canvas>
+  
+  <!-- Temporal Navigation -->
+  <nav id="navbar" class="navbar navbar-4d">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <h2 class="brand-morph">F. Mirindi</h2>
+        <div class="temporal-indicator"></div>
+      </div>
+
+      <ul id="nav-menu" class="nav-menu nav-4d">
+        <li><a class="nav-link nav-depth" data-page="home" data-depth="0">Home</a></li>
+        <li><a class="nav-link nav-depth" data-page="research" data-depth="1">Research</a></li>
+        <li><a class="nav-link nav-depth" data-page="papers" data-depth="2">Papers</a></li>
+        <li><a class="nav-link nav-depth" data-page="conferences" data-depth="3">Conferences</a></li>
+        <li><a class="nav-link nav-depth" data-page="ai-implementation" data-depth="4">AI & Economics</a></li>
+        <li><a class="nav-link nav-depth" data-page="contact" data-depth="5">Contact</a></li>
+      </ul>
     </div>
+  </nav>
 
-    <!-- Navigation -->
-    <nav class="floating-nav" id="nav">
-        <div class="nav-logo">
-            <div class="logo-cube">AI</div>
-            <span>Economics Research</span>
+  <main class="main-content main-4d">
+    <!-- 4D HOME PAGE -->
+    <section id="home" class="page page-4d active" data-scroll-section>
+      <div class="hero-section hero-4d">
+        <!-- Multi-layered Parallax Background -->
+        <div class="parallax-container">
+          <div class="parallax-layer" data-speed="0.2"></div>
+          <div class="parallax-layer" data-speed="0.5"></div>
+          <div class="parallax-layer" data-speed="0.8"></div>
         </div>
-        <ul class="nav-menu">
-            <li><a href="#home" class="nav-link active" data-page="home">Home</a></li>
-            <li><a href="#papers" class="nav-link" data-page="papers">Papers & Conferences</a></li>
-            <li><a href="#ai-economics" class="nav-link" data-page="ai-economics">AI in Economics</a></li>
-            <li><a href="#research" class="nav-link" data-page="research">Research</a></li>
-        </ul>
-        <button class="theme-toggle" id="themeToggle">
-            <span class="theme-icon">🌙</span>
-        </button>
-    </nav>
+        
+        <div class="hero-content hero-morphing">
+          <div class="hero-text text-4d">
+            <h1 class="hero-title title-temporal">
+              <span class="word-morph" data-words="PhD Candidate,AI Economist,Research Pioneer,Innovation Leader">PhD Candidate</span>
+              <span class="title-shadow"></span>
+            </h1>
+            <div class="temporal-divider"></div>
+            <p class="hero-description description-flow">
+              Exploring the frontiers of artificial intelligence for better economic policy through 
+              <span class="highlight-morph">time-dimensional analysis</span>.
+            </p>
+            <div class="hero-buttons buttons-4d">
+              <a class="btn btn--primary btn-depth" data-page="ai-implementation">
+                <span class="btn-content">See AI Demos</span>
+                <div class="btn-ripple"></div>
+              </a>
+              <a class="btn btn--outline btn-holographic" data-page="papers">
+                <span class="btn-content">Latest Papers</span>
+                <div class="btn-shadow"></div>
+              </a>
+            </div>
+          </div>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <!-- Homepage -->
-        <section class="page active" id="home">
-            <div class="hero-section">
-                <div class="hero-content">
-                    <h1 class="hero-title">
-                        <span class="gradient-text">Artificial Intelligence</span>
-                        <span class="morphing-text">meets Economics</span>
-                    </h1>
-                    <p class="hero-subtitle">
-                        Exploring the intersection of AI and economic research through cutting-edge 4D visualizations and interactive experiences
-                    </p>
-                    <div class="hero-buttons">
-                        <button class="btn btn--primary btn--3d" data-page="ai-economics">
-                            <span>Explore AI Applications</span>
-                            <div class="btn-glow"></div>
-                        </button>
-                        <button class="btn btn--outline btn--3d" data-page="papers">
-                            <span>View Research</span>
-                            <div class="btn-glow"></div>
-                        </button>
-                    </div>
-                </div>
-                <div class="hero-visual">
-                    <div class="interactive-shape" id="heroShape">
-                        <div class="shape-layer"></div>
-                        <div class="shape-layer"></div>
-                        <div class="shape-layer"></div>
-                    </div>
-                </div>
+          <!-- 4D Profile Container -->
+          <div class="profile-container profile-4d">
+            <div class="profile-sphere">
+              <img src="assets/frederic.mirindi.jpg" 
+                   class="profile-image profile-rotating" 
+                   alt="Frédéric Mirindi portrait" />
+              <div class="profile-particles"></div>
+              <div class="profile-rings">
+                <div class="ring ring-1"></div>
+                <div class="ring ring-2"></div>
+                <div class="ring ring-3"></div>
+              </div>
+            </div>
+            <span class="status status--success status-pulsing">
+              <div class="status-glow"></div>
+              Open to Collaboration
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4D Highlights Section -->
+      <section class="highlights-section highlights-4d container" data-scroll-section>
+        <h2 class="section-title title-perspective">At a Glance</h2>
+        <div class="highlights-grid grid-4d">
+          <div class="highlight-card card-floating" data-tilt>
+            <div class="card-inner">
+              <h3 class="metric-number">20+</h3>
+              <p class="metric-label">Peer-Reviewed Papers</p>
+              <div class="card-glow"></div>
+            </div>
+          </div>
+          <!-- Additional cards with similar 4D enhancements -->
+        </div>
+      </section>
+    </section>
+
+    <!-- AI IMPLEMENTATION PAGE with 4D Features -->
+    <section id="ai-implementation" class="page page-4d">
+      <div class="ai-background-4d">
+        <canvas id="neural-network-canvas"></canvas>
+      </div>
+      
+      <header class="page-header header-4d">
+        <h1 class="page-title title-holographic">AI Applications in Economics</h1>
+        <p class="page-subtitle subtitle-flowing">
+          Interactive 4D demonstrations of machine learning in economic analysis
+        </p>
+      </header>
+
+      <div class="ai-tools-grid grid-temporal container">
+        <!-- 4D Economic Forecasting Tool -->
+        <article class="ai-tool-card card-dimensional">
+          <div class="card-header header-gradient">
+            <h3>4D Economic Forecast Generator</h3>
+            <div class="tool-indicator"></div>
+          </div>
+          
+          <div class="tool-interface interface-4d">
+            <div class="control-group group-morphing">
+              <label class="control-label">Economic Indicator
+                <select id="indicator-select" class="form-control control-depth">
+                  <option value="gdp">GDP Growth</option>
+                  <option value="cpi">Inflation Rate</option>
+                  <option value="unemployment">Unemployment</option>
+                  <option value="trade">Trade Balance</option>
+                </select>
+              </label>
+              
+              <label class="control-label">Time Dimension (months)
+                <input type="range" id="forecast-period" 
+                       class="range-slider range-4d" 
+                       min="6" max="36" value="12" />
+                <span class="range-value value-floating">12</span>
+              </label>
+              
+              <button id="run-forecast" class="btn btn--primary btn-quantum">
+                <span class="btn-text">Generate 4D Forecast</span>
+                <div class="btn-particles"></div>
+              </button>
+            </div>
+          </div>
+          
+          <div class="forecast-result result-dimensional" style="display:none">
+            <canvas id="forecast-4d-chart" class="chart-temporal"></canvas>
+            <div class="forecast-metrics metrics-floating">
+              <div class="metric-cube">
+                <div class="metric-face metric-confidence">Confidence: <span>--</span></div>
+                <div class="metric-face metric-accuracy">Accuracy: <span>--</span></div>
+                <div class="metric-face metric-volatility">Volatility: <span>--</span></div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 4D Policy Impact Simulator -->
+        <article class="ai-tool-card card-dimensional">
+          <div class="card-header header-gradient">
+            <h3>Temporal Policy Impact Simulator</h3>
+            <div class="tool-indicator"></div>
+          </div>
+          
+          <div class="tool-interface interface-4d">
+            <div class="control-group group-morphing">
+              <label class="control-label">Policy Type
+                <select id="policy-type" class="form-control control-depth">
+                  <option value="fiscal">Fiscal Policy</option>
+                  <option value="monetary">Monetary Policy</option>
+                  <option value="trade">Trade Policy</option>
+                  <option value="social">Social Policy</option>
+                </select>
+              </label>
+              
+              <label class="control-label">Impact Magnitude
+                <input type="range" id="impact-magnitude" 
+                       class="range-slider range-4d" 
+                       min="-10" max="10" value="0" step="0.5" />
+                <span class="range-value value-floating">0%</span>
+              </label>
+              
+              <button id="simulate-policy" class="btn btn--primary btn-quantum">
+                <span class="btn-text">Run 4D Simulation</span>
+                <div class="btn-particles"></div>
+              </button>
+            </div>
+          </div>
+          
+          <div class="simulation-results results-dimensional">
+            <div class="results-grid grid-perspective">
+              <div class="result-card card-floating">
+                <h4>Short-term Impact</h4>
+                <div class="impact-chart chart-mini"></div>
+              </div>
+              <div class="result-card card-floating">
+                <h4>Long-term Impact</h4>
+                <div class="impact-chart chart-mini"></div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Enhanced Papers Page with 4D Timeline -->
+    <section id="papers" class="page page-4d">
+      <header class="page-header header-4d">
+        <h1 class="page-title title-holographic">Publications Timeline</h1>
+        <p class="page-subtitle">Navigate through time to explore research evolution</p>
+      </header>
+
+      <div class="timeline-4d container">
+        <div class="timeline-controls controls-floating">
+          <button class="timeline-btn" data-year="2024">2024</button>
+          <button class="timeline-btn" data-year="2025">2025</button>
+          <button class="timeline-btn active" data-year="all">All</button>
+        </div>
+        
+        <div class="papers-timeline timeline-dimensional">
+          <div class="timeline-axis axis-perspective"></div>
+          
+          <article class="paper-card card-temporal" data-year="2025">
+            <div class="paper-date date-floating">
+              <span class="year">2025</span>
             </div>
             
-            <div class="research-highlights">
-                <h2>Research Highlights</h2>
-                <div class="highlights-grid">
-                    <div class="highlight-card">
-                        <div class="card-icon">📊</div>
-                        <h3>AI Forecasting</h3>
-                        <p>AI models outperform traditional econometric forecasting by significant margins</p>
-                    </div>
-                    <div class="highlight-card">
-                        <div class="card-icon">🧠</div>
-                        <h3>Behavioral AI</h3>
-                        <p>Behavioral AI can identify and correct human cognitive biases in economic decisions</p>
-                    </div>
-                    <div class="highlight-card">
-                        <div class="card-icon">💾</div>
-                        <h3>Big Data Analysis</h3>
-                        <p>Machine learning enables analysis of previously impossible large-scale economic datasets</p>
-                    </div>
-                    <div class="highlight-card">
-                        <div class="card-icon">🎯</div>
-                        <h3>Policy Design</h3>
-                        <p>AI-driven personalization revolutionizing how economic policies are designed and implemented</p>
-                    </div>
-                </div>
+            <div class="paper-content content-morphing">
+              <h3 class="paper-title title-depth">
+                <a href="https://link.springer.com/chapter/10.1007/978-3-031-72617-0_1" 
+                   target="_blank" class="link-holographic">
+                  AI & Automation for Green Transportation Systems
+                </a>
+              </h3>
+              
+              <div class="paper-meta meta-floating">
+                <span class="journal journal-glow">Springer LNCS</span>
+                <span class="impact-factor factor-pulsing">Impact: High</span>
+              </div>
+              
+              <p class="paper-abstract abstract-flowing">
+                Comprehensive review of autonomous logistics and CO₂ mitigation through 
+                temporal analysis of transportation patterns.
+              </p>
+              
+              <div class="paper-actions actions-4d">
+                <a class="btn btn--outline btn-depth" 
+                   href="assets/green-transportation.pdf" download>
+                  <span class="btn-content">Download PDF</span>
+                </a>
+                <button class="btn btn--secondary btn-holographic" 
+                        data-footnote="greenNote">
+                  <span class="btn-content">View Citation</span>
+                </button>
+              </div>
             </div>
-        </section>
-
-        <!-- Papers & Conferences -->
-        <section class="page" id="papers">
-            <div class="container">
-                <h1 class="page-title">Papers & Conferences</h1>
-                
-                <div class="search-filter-bar">
-                    <div class="search-container">
-                        <input type="text" class="form-control search-input" placeholder="Search papers and conferences..." id="searchInput">
-                        <div class="search-icon">🔍</div>
-                    </div>
-                    <div class="filter-tags" id="filterTags"></div>
-                </div>
-
-                <div class="content-tabs">
-                    <button class="tab-btn active" data-tab="conferences">Conferences</button>
-                    <button class="tab-btn" data-tab="papers">Papers</button>
-                </div>
-
-                <div class="tab-content active" id="conferences">
-                    <div class="timeline">
-                        <div class="timeline-line"></div>
-                        <div id="conferencesList"></div>
-                    </div>
-                </div>
-
-                <div class="tab-content" id="papers-content">
-                    <div class="papers-grid" id="papersList"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- AI in Economics -->
-        <section class="page" id="ai-economics">
-            <div class="container">
-                <h1 class="page-title">AI Applications in Economics</h1>
-                
-                <div class="ai-dashboard">
-                    <div class="dashboard-grid">
-                        <div class="dashboard-card interactive-demo">
-                            <h3>Economic Forecasting Simulator</h3>
-                            <div class="simulation-controls">
-                                <label class="form-label">GDP Growth Rate:</label>
-                                <input type="range" class="form-control" min="0" max="10" value="2.5" id="gdpSlider">
-                                <span id="gdpValue">2.5%</span>
-                            </div>
-                            <div class="chart-container">
-                                <canvas id="forecastChart" width="400" height="200"></canvas>
-                            </div>
-                        </div>
-
-                        <div class="dashboard-card">
-                            <h3>Behavioral Economics Model</h3>
-                            <div class="behavior-simulation">
-                                <div class="decision-scenario">
-                                    <p>Decision Scenario: Investment Choice</p>
-                                    <div class="choices">
-                                        <button class="choice-btn" data-choice="safe">Safe Investment (5% return)</button>
-                                        <button class="choice-btn" data-choice="risky">Risky Investment (15% return, 30% loss chance)</button>
-                                    </div>
-                                    <div class="ai-prediction" id="aiPrediction"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="dashboard-card">
-                            <h3>Real-time Market Analysis</h3>
-                            <div class="market-data">
-                                <div class="metric">
-                                    <span class="metric-label">AI Accuracy:</span>
-                                    <span class="metric-value">280x</span>
-                                    <span class="metric-unit">improvement</span>
-                                </div>
-                                <div class="metric">
-                                    <span class="metric-label">AI Investment:</span>
-                                    <span class="metric-value">$109.1B</span>
-                                    <span class="metric-unit">in 2024</span>
-                                </div>
-                                <div class="metric">
-                                    <span class="metric-label">Adoption Rate:</span>
-                                    <span class="metric-value">78%</span>
-                                    <span class="metric-unit">of organizations</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="ai-applications-section">
-                    <h2>AI Application Categories</h2>
-                    <div class="applications-grid" id="applicationsGrid"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Research -->
-        <section class="page" id="research">
-            <div class="container">
-                <h1 class="page-title">Research Overview</h1>
-                
-                <div class="research-content">
-                    <div class="research-intro">
-                        <h2>About Our Research</h2>
-                        <p>Our research explores the transformative impact of artificial intelligence on economic theory and practice. We focus on developing innovative methodologies that bridge the gap between computational intelligence and economic understanding.</p>
-                    </div>
-
-                    <div class="methodology-section">
-                        <h2>Research Methodology</h2>
-                        <div class="methodology-grid">
-                            <div class="method-card">
-                                <h3>Machine Learning Models</h3>
-                                <p>Advanced neural networks and ensemble methods for economic prediction and analysis</p>
-                                <div class="footnote-trigger" data-footnote="ml-models">
-                                    <span class="footnote-number">1</span>
-                                </div>
-                            </div>
-                            <div class="method-card">
-                                <h3>Behavioral Analysis</h3>
-                                <p>AI-driven understanding of human decision-making patterns in economic contexts</p>
-                                <div class="footnote-trigger" data-footnote="behavioral">
-                                    <span class="footnote-number">2</span>
-                                </div>
-                            </div>
-                            <div class="method-card">
-                                <h3>Data Integration</h3>
-                                <p>Combining multiple data sources for comprehensive economic modeling</p>
-                                <div class="footnote-trigger" data-footnote="data-integration">
-                                    <span class="footnote-number">3</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footnotes System -->
-    <div class="footnotes-panel" id="footnotesPanel">
-        <div class="footnotes-content">
-            <button class="footnotes-close" id="footnotesClose">×</button>
-            <div class="footnote-item" id="ml-models">
-                <h4>Machine Learning Models</h4>
-                <p>Our research utilizes LSTM networks for time series analysis, Random Forest models for feature importance, and ensemble methods that combine multiple algorithms for robust predictions. These models have shown 280x improvement in cost efficiency since 2022.</p>
-            </div>
-            <div class="footnote-item" id="behavioral">
-                <h4>Behavioral Analysis</h4>
-                <p>Using AI to analyze behavioral patterns allows us to identify cognitive biases and design better decision architectures. This approach has been adopted by 78% of organizations for behavioral insights.</p>
-            </div>
-            <div class="footnote-item" id="data-integration">
-                <h4>Data Integration</h4>
-                <p>We combine traditional economic indicators with alternative data sources including social media sentiment, satellite imagery, and real-time transaction data to create comprehensive economic models.</p>
-            </div>
+          </article>
+          
+          <!-- Additional papers with similar 4D enhancements -->
         </div>
-    </div>
+      </div>
+    </section>
+  </main>
 
-    <!-- Footnote Hover Popup -->
-    <div class="footnote-popup" id="footnotePopup">
-        <div class="popup-content"></div>
-        <div class="popup-arrow"></div>
+  <!-- Enhanced Footnote Modal with 4D Effects -->
+  <div id="footnote-modal" class="footnote-modal modal-4d">
+    <div class="modal-backdrop backdrop-blur"></div>
+    <div class="footnote-content content-dimensional">
+      <div class="footnote-header header-gradient">
+        <h3 class="modal-title">Reference Details</h3>
+        <button class="footnote-close btn-morphing">×</button>
+      </div>
+      <div class="footnote-body body-flowing"></div>
     </div>
-
-    <script src="app.js"></script>
+  </div>
 </body>
 </html>
