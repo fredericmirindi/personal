@@ -1,889 +1,558 @@
-// Application Data
-const appData = {
-    conferences: [
-        {
-            name: "AI in Finance 2025",
-            date: "2025-05-15",
-            location: "Montreal, Canada",
-            description: "Exploring cutting-edge AI applications in finance and economics",
-            website: "https://sites.events.concordia.ca/sites/concordia/en/aiinfinance2025/pages/25514",
-            topics: ["AI", "Finance", "Real Estate", "Machine Learning"]
-        },
-        {
-            name: "International Conference on Financial Innovation",
-            date: "2025-07-20",
-            location: "Online",
-            description: "AI-driven economic forecasting and mathematical modeling",
-            website: "https://www.atlantis-press.com/",
-            topics: ["Economic Forecasting", "Mathematical Modeling", "AI"]
-        },
-        {
-            name: "Behavioral Economics AI Summit",
-            date: "2025-09-10",
-            location: "Stanford, CA",
-            description: "Intersection of behavioral economics and artificial intelligence",
-            website: "https://www.gsb.stanford.edu/",
-            topics: ["Behavioral Economics", "AI", "Decision Making"]
-        }
-    ],
-    papers: [
-        {
-            title: "The Impact of Machine Learning on Economics",
-            authors: ["Susan Athey", "Guido Imbens"],
-            year: "2025",
-            journal: "American Economic Review",
-            abstract: "Assessment of early contributions of machine learning to economics and predictions about future contributions",
-            topics: ["Machine Learning", "Economics", "Policy Analysis"],
-            link: "https://www.gsb.stanford.edu/faculty-research/publications/impact-machine-learning-economics"
-        },
-        {
-            title: "Behavioral Economics of AI: LLM Biases and Corrections",
-            authors: ["Research Team"],
-            year: "2025",
-            journal: "SSRN",
-            abstract: "Comprehensive experiments on behavioral biases in large language models and economic decisions",
-            topics: ["Behavioral Economics", "AI Bias", "LLMs"],
-            link: "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5213130"
-        },
-        {
-            title: "AI-Driven Economic Forecasting: Mathematical Modeling in Western Economics",
-            authors: ["Yu, J.", "Zhang, H.", "Chen, Y."],
-            year: "2025",
-            journal: "Advances in Economics",
-            abstract: "Novel AI-driven forecasting model incorporating advanced mathematical techniques",
-            topics: ["Economic Forecasting", "AI", "Mathematical Modeling"],
-            link: "https://www.atlantis-press.com/"
-        }
-    ],
-    aiApplications: [
-        {
-            category: "Economic Forecasting",
-            description: "AI models processing vast datasets to predict GDP, inflation, and market trends",
-            accuracy: "280x improvement in cost efficiency since 2022",
-            examples: ["LSTM networks for time series", "Random Forest models", "Ensemble methods"]
-        },
-        {
-            category: "Behavioral Economics",
-            description: "AI analyzing human decision-making patterns and cognitive biases",
-            applications: ["Personalized nudging", "Bias detection", "Decision architecture design"],
-            impact: "78% of organizations now use AI for behavioral insights"
-        },
-        {
-            category: "Financial Risk Management",
-            description: "Machine learning for real-time risk assessment and portfolio optimization",
-            benefits: ["Real-time analysis", "Pattern recognition", "Automated adjustments"],
-            adoption: "109.1 billion USD invested in AI in 2024"
-        }
-    ]
-};
-
-// Global state
+// Enhanced 4D Global State
 let currentPage = 'home';
-let currentChart = null;
-let particleSystem = null;
-let mousePosition = { x: 0, y: 0 };
-let filteredData = { papers: [], conferences: [] };
+let isDarkMode = false;
+let animationObserver;
+let particleSystem;
+let temporalEffects = {};
+let mouse = { x: 0, y: 0 };
 
-// Initialize the application
+// 4D Initialization
 document.addEventListener('DOMContentLoaded', function() {
-    initializeApp();
-    setupEventListeners();
-    initializeParticleSystem();
-    setupMouseTracking();
-    setupInteractiveElements();
-    renderInitialContent();
+  initializeTheme();
+  initializeNavigation();
+  initializeAnimations();
+  initialize4DEffects();
+  initializeParticleSystem();
+  initializeTemporalInteractions();
+  initializeCharts();
+  initializeForms();
+  initializeFootnotes();
+  showPage('home');
 });
 
-function initializeApp() {
-    // Set initial filtered data
-    filteredData.papers = [...appData.papers];
-    filteredData.conferences = [...appData.conferences];
-    
-    // Initialize theme
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    document.documentElement.setAttribute('data-color-scheme', savedTheme);
-    updateThemeToggle(savedTheme);
+// 4D Effects Initialization
+function initialize4DEffects() {
+  initializeMouseTracking();
+  initializeScrollParallax();
+  initializeMorphingText();
+  initializeDepthInteractions();
+  initializeTemporalNavigation();
 }
 
-function setupEventListeners() {
-    // Navigation
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', handleNavigation);
-    });
+// Mouse Tracking for 4D Effects
+function initializeMouseTracking() {
+  document.addEventListener('mousemove', function(e) {
+    mouse.x = (e.clientX / window.innerWidth) * 100;
+    mouse.y = (e.clientY / window.innerHeight) * 100;
     
-    document.querySelectorAll('[data-page]').forEach(element => {
-        element.addEventListener('click', function(e) {
-            e.preventDefault();
-            const page = this.getAttribute('data-page');
-            showPage(page);
-        });
-    });
+    // Update CSS custom properties for reactive effects
+    document.documentElement.style.setProperty('--mouse-x', `${mouse.x}%`);
+    document.documentElement.style.setProperty('--mouse-y', `${mouse.y}%`);
     
-    // Theme toggle
-    document.getElementById('themeToggle').addEventListener('click', toggleTheme);
-    
-    // Search functionality
-    const searchInput = document.getElementById('searchInput');
-    if (searchInput) {
-        searchInput.addEventListener('input', handleSearch);
-    }
-    
-    // Tab functionality
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.addEventListener('click', handleTabChange);
-    });
-    
-    // AI simulation controls
-    const gdpSlider = document.getElementById('gdpSlider');
-    if (gdpSlider) {
-        gdpSlider.addEventListener('input', updateGDPSimulation);
-    }
-    
-    // Behavioral economics choices
-    document.querySelectorAll('.choice-btn').forEach(btn => {
-        btn.addEventListener('click', handleBehavioralChoice);
-    });
-    
-    // Footnotes system
-    setupFootnotesSystem();
+    // Update parallax layers
+    updateParallaxLayers(mouse.x, mouse.y);
+  });
 }
 
-function handleNavigation(e) {
-    e.preventDefault();
-    const page = this.getAttribute('data-page');
-    showPage(page);
-}
-
-function showPage(pageId) {
-    // Update navigation
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.classList.remove('active');
-    });
-    document.querySelector(`[data-page="${pageId}"]`).classList.add('active');
+// Scroll Parallax System
+function initializeScrollParallax() {
+  const parallaxLayers = document.querySelectorAll('.parallax-layer');
+  
+  window.addEventListener('scroll', function() {
+    const scrolled = window.pageYOffset;
+    const rate = scrolled * -0.5;
     
-    // Show page content
-    document.querySelectorAll('.page').forEach(page => {
-        page.classList.remove('active');
+    parallaxLayers.forEach((layer, index) => {
+      const speed = layer.dataset.speed || 0.5;
+      const yPos = scrolled * speed;
+      layer.style.transform = `translateY(${yPos}px)`;
+    });
+  });
+}
+
+// Morphing Text System
+function initializeMorphingText() {
+  const morphingElements = document.querySelectorAll('.word-morph');
+  
+  morphingElements.forEach(element => {
+    const words = element.dataset.words.split(',');
+    let currentWordIndex = 0;
+    
+    setInterval(() => {
+      currentWordIndex = (currentWordIndex + 1) % words.length;
+      element.textContent = words[currentWordIndex];
+    }, 3000);
+  });
+}
+
+// Depth Interactions
+function initializeDepthInteractions() {
+  const depthElements = document.querySelectorAll('[data-tilt]');
+  
+  depthElements.forEach(element => {
+    element.addEventListener('mousemove', function(e) {
+      const rect = element.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const rotateX = (y - centerY) / centerY * 10;
+      const rotateY = (centerX - x) / centerX * 10;
+      
+      element.style.transform = `
+        perspective(1000px) 
+        rotateX(${rotateX}deg) 
+        rotateY(${rotateY}deg) 
+        translateZ(20px)
+      `;
     });
     
-    const targetPage = document.getElementById(pageId);
-    if (targetPage) {
-        targetPage.classList.add('active');
-        currentPage = pageId;
-        
-        // Trigger page-specific initialization
-        switch(pageId) {
-            case 'papers':
-                renderPapersAndConferences();
-                break;
-            case 'ai-economics':
-                initializeAIEconomics();
-                break;
-            case 'research':
-                // Research page is static
-                break;
-        }
-    }
+    element.addEventListener('mouseleave', function() {
+      element.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+    });
+  });
 }
 
-function toggleTheme() {
-    const currentTheme = document.documentElement.getAttribute('data-color-scheme');
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-color-scheme', newTheme);
-    localStorage.setItem('theme', newTheme);
-    updateThemeToggle(newTheme);
-}
-
-function updateThemeToggle(theme) {
-    const toggle = document.getElementById('themeToggle');
-    const icon = toggle.querySelector('.theme-icon');
-    icon.textContent = theme === 'dark' ? '☀️' : '🌙';
+// Temporal Navigation
+function initializeTemporalNavigation() {
+  const navLinks = document.querySelectorAll('.nav-depth');
+  
+  navLinks.forEach(link => {
+    const depth = parseInt(link.dataset.depth) || 0;
+    
+    link.addEventListener('mouseenter', function() {
+      this.style.transform = `translateZ(${depth * 5 + 10}px) rotateX(5deg)`;
+    });
+    
+    link.addEventListener('mouseleave', function() {
+      this.style.transform = 'translateZ(0) rotateX(0)';
+    });
+  });
 }
 
 // Particle System
 function initializeParticleSystem() {
-    const container = document.getElementById('particles');
-    const particles = [];
-    
-    function createParticle() {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.animationDelay = Math.random() * 8 + 's';
-        particle.style.animationDuration = (8 + Math.random() * 4) + 's';
-        container.appendChild(particle);
-        particles.push(particle);
-        
-        // Remove particle after animation
-        setTimeout(() => {
-            if (particle.parentNode) {
-                particle.parentNode.removeChild(particle);
-            }
-            const index = particles.indexOf(particle);
-            if (index > -1) {
-                particles.splice(index, 1);
-            }
-        }, 12000);
+  const canvas = document.getElementById('particle-canvas');
+  if (!canvas) return;
+  
+  const ctx = canvas.getContext('2d');
+  const particles = [];
+  
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  
+  // Particle class
+  class Particle {
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.vx = (Math.random() - 0.5) * 0.5;
+      this.vy = (Math.random() - 0.5) * 0.5;
+      this.size = Math.random() * 2 + 1;
+      this.opacity = Math.random() * 0.5 + 0.2;
     }
     
-    // Create particles periodically
-    setInterval(createParticle, 500);
-    
-    // Initial particles
-    for (let i = 0; i < 5; i++) {
-        setTimeout(createParticle, i * 100);
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      
+      if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
     }
+    
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(33, 128, 141, ${this.opacity})`;
+      ctx.fill();
+    }
+  }
+  
+  // Create particles
+  for (let i = 0; i < 50; i++) {
+    particles.push(new Particle());
+  }
+  
+  // Animation loop
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    particles.forEach(particle => {
+      particle.update();
+      particle.draw();
+    });
+    
+    requestAnimationFrame(animate);
+  }
+  
+  animate();
+  
+  // Resize handler
+  window.addEventListener('resize', function() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
 }
 
-// Mouse tracking for interactive elements
-function setupMouseTracking() {
-    document.addEventListener('mousemove', function(e) {
-        mousePosition.x = e.clientX;
-        mousePosition.y = e.clientY;
+// Temporal Interactions
+function initializeTemporalInteractions() {
+  // Time-based color transitions
+  setInterval(() => {
+    const time = Date.now() * 0.001;
+    const hue = (Math.sin(time * 0.1) * 30 + 180) % 360;
+    
+    document.documentElement.style.setProperty(
+      '--color-temporal', 
+      `hsl(${hue}, 70%, 50%)`
+    );
+  }, 100);
+  
+  // Breathing animation for status indicators
+  const statusElements = document.querySelectorAll('.status-pulsing');
+  statusElements.forEach(element => {
+    let phase = 0;
+    setInterval(() => {
+      phase += 0.1;
+      const scale = 1 + Math.sin(phase) * 0.05;
+      const opacity = 0.8 + Math.sin(phase) * 0.2;
+      element.style.transform = `scale(${scale})`;
+      element.style.opacity = opacity;
+    }, 50);
+  });
+}
+
+// Enhanced AI Tools with 4D Features
+function initializeAITools() {
+  // 4D Economic Forecasting
+  const forecast4DBtn = document.getElementById('run-forecast');
+  if (forecast4DBtn && !forecast4DBtn.hasAttribute('data-initialized')) {
+    forecast4DBtn.setAttribute('data-initialized', 'true');
+    forecast4DBtn.addEventListener('click', function() {
+      const indicator = document.getElementById('indicator-select').value;
+      const period = document.getElementById('forecast-period').value;
+      const resultDiv = document.querySelector('.forecast-result');
+      
+      // Add 4D loading animation
+      this.classList.add('btn-loading');
+      this.innerHTML = `
+        <span class="btn-text">Generating 4D Forecast...</span>
+        <div class="loading-particles"></div>
+      `;
+      
+      setTimeout(() => {
+        resultDiv.style.display = 'block';
+        resultDiv.classList.add('result-appearing');
         
-        // Update hero shape rotation based on mouse position
-        const heroShape = document.getElementById('heroShape');
-        if (heroShape) {
-            const rect = heroShape.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            
-            const deltaX = (e.clientX - centerX) / 10;
-            const deltaY = (e.clientY - centerY) / 10;
-            
-            heroShape.style.transform = `rotateX(${deltaY}deg) rotateY(${deltaX}deg)`;
+        // Generate 4D forecast visualization
+        const canvas = document.getElementById('forecast-4d-chart');
+        if (canvas) {
+          generate4DForecastChart(canvas, indicator, period);
         }
-    });
-}
-
-function setupInteractiveElements() {
-    // Hero shape interaction
-    const heroShape = document.getElementById('heroShape');
-    if (heroShape) {
-        heroShape.addEventListener('click', function() {
-            this.style.transform = 'rotateX(360deg) rotateY(360deg) scale(1.2)';
-            setTimeout(() => {
-                this.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-            }, 1000);
-        });
-    }
-    
-    // Add hover effects to cards
-    document.querySelectorAll('.highlight-card, .paper-card, .application-card').forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-10px) scale(1.02)';
+        
+        // Update floating metrics
+        updateFloatingMetrics(resultDiv, {
+          confidence: (Math.random() * 20 + 75).toFixed(1),
+          accuracy: (Math.random() * 15 + 80).toFixed(1),
+          volatility: (Math.random() * 10 + 5).toFixed(1)
         });
         
-        card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0) scale(1)';
-        });
-    });
-}
-
-function renderInitialContent() {
-    renderPapersAndConferences();
-    generateFilterTags();
-    renderAIApplications();
-}
-
-// Papers and Conferences
-function renderPapersAndConferences() {
-    renderConferences();
-    renderPapers();
-}
-
-function renderConferences() {
-    const container = document.getElementById('conferencesList');
-    if (!container) return;
-    
-    container.innerHTML = '';
-    
-    filteredData.conferences.forEach((conference, index) => {
-        const conferenceElement = document.createElement('div');
-        conferenceElement.className = 'timeline-item';
-        
-        const date = new Date(conference.date);
-        const formattedDate = date.toLocaleDateString('en-US', { 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
-        });
-        
-        conferenceElement.innerHTML = `
-            <div class="timeline-dot"></div>
-            <div class="timeline-content">
-                <h3 class="conference-title">${conference.name}</h3>
-                <div class="conference-date">${formattedDate}</div>
-                <div class="conference-location">${conference.location}</div>
-                <p class="conference-description">${conference.description}</p>
-                <a href="${conference.website}" target="_blank" class="conference-link">Visit Conference Website</a>
-                <div class="conference-topics">
-                    ${conference.topics.map(topic => `<span class="topic-tag">${topic}</span>`).join('')}
-                </div>
-            </div>
+        // Reset button
+        this.classList.remove('btn-loading');
+        this.innerHTML = `
+          <span class="btn-text">Generate 4D Forecast</span>
+          <div class="btn-particles"></div>
         `;
-        
-        container.appendChild(conferenceElement);
+      }, 2000);
     });
-}
-
-function renderPapers() {
-    const container = document.getElementById('papersList');
-    if (!container) return;
-    
-    container.innerHTML = '';
-    
-    filteredData.papers.forEach(paper => {
-        const paperElement = document.createElement('div');
-        paperElement.className = 'paper-card';
+  }
+  
+  // 4D Policy Simulator
+  const simulateBtn = document.getElementById('simulate-policy');
+  if (simulateBtn && !simulateBtn.hasAttribute('data-initialized')) {
+    simulateBtn.setAttribute('data-initialized', 'true');
+    simulateBtn.addEventListener('click', function() {
+      const policyType = document.getElementById('policy-type').value;
+      const magnitude = document.getElementById('impact-magnitude').value;
+      const resultsDiv = document.querySelector('.simulation-results');
+      
+      this.classList.add('btn-loading');
+      this.innerHTML = `
+        <span class="btn-text">Running 4D Simulation...</span>
+        <div class="loading-particles"></div>
+      `;
+      
+      setTimeout(() => {
+        generate4DPolicyResults(resultsDiv, policyType, magnitude);
         
-        paperElement.innerHTML = `
-            <h3 class="paper-title">${paper.title}</h3>
-            <div class="paper-authors">${paper.authors.join(', ')}</div>
-            <div class="paper-journal">${paper.journal} (${paper.year})</div>
-            <p class="paper-abstract">${paper.abstract}</p>
-            <div class="conference-topics">
-                ${paper.topics.map(topic => `<span class="topic-tag">${topic}</span>`).join('')}
-            </div>
-            <a href="${paper.link}" target="_blank" class="paper-link">Read Paper</a>
+        this.classList.remove('btn-loading');
+        this.innerHTML = `
+          <span class="btn-text">Run 4D Simulation</span>
+          <div class="btn-particles"></div>
         `;
-        
-        container.appendChild(paperElement);
+      }, 2500);
     });
+  }
 }
 
-function generateFilterTags() {
-    const container = document.getElementById('filterTags');
-    if (!container) return;
+// Generate 4D Forecast Chart
+function generate4DForecastChart(canvas, indicator, period) {
+  const ctx = canvas.getContext('2d');
+  canvas.width = 400;
+  canvas.height = 200;
+  
+  // Clear canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  // Generate multi-dimensional data
+  const data = [];
+  const confidence = [];
+  const volatility = [];
+  
+  for (let i = 0; i < period; i++) {
+    const base = 100 + Math.sin(i * 0.3) * 20;
+    const noise = (Math.random() - 0.5) * 10;
+    data.push(base + noise);
+    confidence.push(85 + Math.random() * 10);
+    volatility.push(5 + Math.random() * 5);
+  }
+  
+  // Draw temporal layers
+  ctx.strokeStyle = 'rgba(33, 128, 141, 0.3)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  
+  data.forEach((value, index) => {
+    const x = (index / (period - 1)) * canvas.width;
+    const y = canvas.height - (value / 150) * canvas.height;
     
-    const allTopics = new Set();
-    
-    appData.papers.forEach(paper => {
-        paper.topics.forEach(topic => allTopics.add(topic));
-    });
-    
-    appData.conferences.forEach(conference => {
-        conference.topics.forEach(topic => allTopics.add(topic));
-    });
-    
-    container.innerHTML = '';
-    
-    Array.from(allTopics).forEach(topic => {
-        const tag = document.createElement('span');
-        tag.className = 'filter-tag';
-        tag.textContent = topic;
-        tag.addEventListener('click', () => toggleFilter(topic, tag));
-        container.appendChild(tag);
-    });
-}
-
-function toggleFilter(topic, tagElement) {
-    tagElement.classList.toggle('active');
-    
-    const activeFilters = Array.from(document.querySelectorAll('.filter-tag.active'))
-        .map(tag => tag.textContent);
-    
-    if (activeFilters.length === 0) {
-        filteredData.papers = [...appData.papers];
-        filteredData.conferences = [...appData.conferences];
+    if (index === 0) {
+      ctx.moveTo(x, y);
     } else {
-        filteredData.papers = appData.papers.filter(paper => 
-            paper.topics.some(topic => activeFilters.includes(topic))
-        );
-        filteredData.conferences = appData.conferences.filter(conference => 
-            conference.topics.some(topic => activeFilters.includes(topic))
-        );
+      ctx.lineTo(x, y);
     }
+  });
+  
+  ctx.stroke();
+  
+  // Add confidence bands
+  ctx.fillStyle = 'rgba(33, 128, 141, 0.1)';
+  ctx.beginPath();
+  
+  data.forEach((value, index) => {
+    const x = (index / (period - 1)) * canvas.width;
+    const y1 = canvas.height - ((value + volatility[index]) / 150) * canvas.height;
+    const y2 = canvas.height - ((value - volatility[index]) / 150) * canvas.height;
     
-    renderPapersAndConferences();
-}
-
-function handleSearch(e) {
-    const query = e.target.value.toLowerCase();
-    
-    filteredData.papers = appData.papers.filter(paper => 
-        paper.title.toLowerCase().includes(query) ||
-        paper.authors.some(author => author.toLowerCase().includes(query)) ||
-        paper.abstract.toLowerCase().includes(query)
-    );
-    
-    filteredData.conferences = appData.conferences.filter(conference => 
-        conference.name.toLowerCase().includes(query) ||
-        conference.description.toLowerCase().includes(query) ||
-        conference.location.toLowerCase().includes(query)
-    );
-    
-    renderPapersAndConferences();
-}
-
-function handleTabChange(e) {
-    const tabName = e.target.getAttribute('data-tab');
-    
-    // Update tab buttons
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    e.target.classList.add('active');
-    
-    // Update tab content
-    document.querySelectorAll('.tab-content').forEach(content => {
-        content.classList.remove('active');
-    });
-    
-    const targetContent = document.getElementById(tabName === 'conferences' ? 'conferences' : 'papers-content');
-    if (targetContent) {
-        targetContent.classList.add('active');
+    if (index === 0) {
+      ctx.moveTo(x, y1);
+    } else {
+      ctx.lineTo(x, y1);
     }
+  });
+  
+  for (let i = data.length - 1; i >= 0; i--) {
+    const x = (i / (period - 1)) * canvas.width;
+    const y = canvas.height - ((data[i] - volatility[i]) / 150) * canvas.height;
+    ctx.lineTo(x, y);
+  }
+  
+  ctx.closePath();
+  ctx.fill();
 }
 
-// AI Economics Page
-function initializeAIEconomics() {
-    renderAIApplications();
-    initializeForecastChart();
-    setupBehavioralSimulation();
-}
-
-function renderAIApplications() {
-    const container = document.getElementById('applicationsGrid');
-    if (!container) return;
+// Update Floating Metrics
+function updateFloatingMetrics(container, metrics) {
+  const metricCube = container.querySelector('.metric-cube');
+  if (metricCube) {
+    const faces = metricCube.querySelectorAll('.metric-face span');
+    faces[0].textContent = `${metrics.confidence}%`;
+    faces[1].textContent = `${metrics.accuracy}%`;
+    faces[2].textContent = `${metrics.volatility}%`;
     
-    container.innerHTML = '';
-    
-    appData.aiApplications.forEach(app => {
-        const appElement = document.createElement('div');
-        appElement.className = 'application-card';
-        
-        let contentHTML = `
-            <h3 class="application-title">${app.category}</h3>
-            <p class="application-description">${app.description}</p>
-        `;
-        
-        if (app.examples) {
-            contentHTML += `
-                <ul class="application-list">
-                    ${app.examples.map(example => `<li>${example}</li>`).join('')}
-                </ul>
-            `;
-        }
-        
-        if (app.applications) {
-            contentHTML += `
-                <ul class="application-list">
-                    ${app.applications.map(application => `<li>${application}</li>`).join('')}
-                </ul>
-            `;
-        }
-        
-        if (app.benefits) {
-            contentHTML += `
-                <ul class="application-list">
-                    ${app.benefits.map(benefit => `<li>${benefit}</li>`).join('')}
-                </ul>
-            `;
-        }
-        
-        if (app.accuracy) {
-            contentHTML += `<div class="application-stat">${app.accuracy}</div>`;
-        }
-        
-        if (app.impact) {
-            contentHTML += `<div class="application-stat">${app.impact}</div>`;
-        }
-        
-        if (app.adoption) {
-            contentHTML += `<div class="application-stat">${app.adoption}</div>`;
-        }
-        
-        appElement.innerHTML = contentHTML;
-        container.appendChild(appElement);
-    });
-}
-
-function initializeForecastChart() {
-    const canvas = document.getElementById('forecastChart');
-    if (!canvas) return;
-    
-    const ctx = canvas.getContext('2d');
-    
-    // Simple chart implementation
-    function drawChart(gdpRate) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        // Draw axes
-        ctx.strokeStyle = '#32b8c6';
-        ctx.lineWidth = 2;
-        
-        // X-axis
-        ctx.beginPath();
-        ctx.moveTo(40, canvas.height - 40);
-        ctx.lineTo(canvas.width - 20, canvas.height - 40);
-        ctx.stroke();
-        
-        // Y-axis
-        ctx.beginPath();
-        ctx.moveTo(40, canvas.height - 40);
-        ctx.lineTo(40, 20);
-        ctx.stroke();
-        
-        // Draw data line
-        ctx.strokeStyle = '#1FB8CD';
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        
-        const points = [];
-        for (let i = 0; i < 12; i++) {
-            const x = 40 + (i * (canvas.width - 60) / 11);
-            const baseY = canvas.height - 40 - (gdpRate * 10);
-            const noise = (Math.random() - 0.5) * 20;
-            const y = baseY + noise;
-            points.push({ x, y });
-        }
-        
-        points.forEach((point, index) => {
-            if (index === 0) {
-                ctx.moveTo(point.x, point.y);
-            } else {
-                ctx.lineTo(point.x, point.y);
-            }
-        });
-        
-        ctx.stroke();
-        
-        // Draw points
-        ctx.fillStyle = '#32b8c6';
-        points.forEach(point => {
-            ctx.beginPath();
-            ctx.arc(point.x, point.y, 4, 0, 2 * Math.PI);
-            ctx.fill();
-        });
-        
-        // Labels
-        ctx.fillStyle = '#626c71';
-        ctx.font = '12px Inter';
-        ctx.fillText('GDP Growth Rate: ' + gdpRate + '%', 50, 30);
-        ctx.fillText('Months', canvas.width / 2 - 20, canvas.height - 10);
-        
-        // Y-axis labels
-        ctx.save();
-        ctx.translate(15, canvas.height / 2);
-        ctx.rotate(-Math.PI / 2);
-        ctx.fillText('Growth %', 0, 0);
-        ctx.restore();
-    }
-    
-    drawChart(2.5);
-    
-    // Store reference for updates
-    window.chartDrawFunction = drawChart;
-}
-
-function updateGDPSimulation(e) {
-    const value = parseFloat(e.target.value);
-    document.getElementById('gdpValue').textContent = value + '%';
-    
-    if (window.chartDrawFunction) {
-        window.chartDrawFunction(value);
-    }
-}
-
-function setupBehavioralSimulation() {
-    // Initialize with default prediction
-    const predictionElement = document.getElementById('aiPrediction');
-    if (predictionElement) {
-        predictionElement.innerHTML = `
-            <strong>AI Prediction:</strong> Based on behavioral patterns, 68% of users typically choose the safe investment option due to loss aversion bias.
-        `;
-    }
-}
-
-function handleBehavioralChoice(e) {
-    const choice = e.target.getAttribute('data-choice');
-    
-    // Update button states
-    document.querySelectorAll('.choice-btn').forEach(btn => {
-        btn.classList.remove('selected');
-    });
-    e.target.classList.add('selected');
-    
-    // Update AI prediction
-    const predictionElement = document.getElementById('aiPrediction');
-    if (predictionElement) {
-        let prediction = '';
-        
-        if (choice === 'safe') {
-            prediction = `
-                <strong>AI Analysis:</strong> You chose the safe investment. This aligns with loss aversion bias, where people prefer avoiding losses over acquiring gains. The AI model predicted this choice with 68% confidence based on behavioral patterns.
-            `;
-        } else {
-            prediction = `
-                <strong>AI Analysis:</strong> You chose the risky investment. This suggests risk-seeking behavior, which is less common (32% of users). The AI model identifies this as potentially influenced by optimism bias and overconfidence.
-            `;
-        }
-        
-        predictionElement.innerHTML = prediction;
-    }
-}
-
-// Footnotes System
-function setupFootnotesSystem() {
-    const footnotesPanel = document.getElementById('footnotesPanel');
-    const footnotesClose = document.getElementById('footnotesClose');
-    const footnotePopup = document.getElementById('footnotePopup');
-    
-    // Footnote triggers
-    document.querySelectorAll('.footnote-trigger').forEach(trigger => {
-        trigger.addEventListener('click', function() {
-            const footnoteId = this.getAttribute('data-footnote');
-            showFootnote(footnoteId);
-        });
-        
-        trigger.addEventListener('mouseenter', function(e) {
-            const footnoteId = this.getAttribute('data-footnote');
-            showFootnotePopup(e, footnoteId);
-        });
-        
-        trigger.addEventListener('mouseleave', function() {
-            hideFootnotePopup();
-        });
-    });
-    
-    // Close footnotes panel
-    if (footnotesClose) {
-        footnotesClose.addEventListener('click', function() {
-            footnotesPanel.classList.remove('open');
-        });
-    }
-    
-    function showFootnote(footnoteId) {
-        // Hide all footnote items
-        document.querySelectorAll('.footnote-item').forEach(item => {
-            item.classList.remove('active');
-        });
-        
-        // Show specific footnote
-        const footnoteItem = document.getElementById(footnoteId);
-        if (footnoteItem) {
-            footnoteItem.classList.add('active');
-            footnotesPanel.classList.add('open');
-        }
-    }
-    
-    function showFootnotePopup(e, footnoteId) {
-        const footnoteItem = document.getElementById(footnoteId);
-        if (!footnoteItem || !footnotePopup) return;
-        
-        const content = footnoteItem.querySelector('p').textContent;
-        footnotePopup.querySelector('.popup-content').textContent = content;
-        
-        footnotePopup.style.left = e.pageX + 'px';
-        footnotePopup.style.top = (e.pageY - 10) + 'px';
-        footnotePopup.classList.add('show');
-    }
-    
-    function hideFootnotePopup() {
-        if (footnotePopup) {
-            footnotePopup.classList.remove('show');
-        }
-    }
-}
-
-// Enhanced animations and effects
-function addEnhancedAnimations() {
-    // Scroll-triggered animations
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, observerOptions);
-    
-    // Observe elements for animation
-    document.querySelectorAll('.highlight-card, .paper-card, .application-card, .method-card').forEach(element => {
-        element.style.opacity = '0';
-        element.style.transform = 'translateY(20px)';
-        element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(element);
-    });
-}
-
-// Voice navigation (experimental)
-function initializeVoiceNavigation() {
-    if ('webkitSpeechRecognition' in window) {
-        const recognition = new webkitSpeechRecognition();
-        recognition.continuous = false;
-        recognition.interimResults = false;
-        recognition.lang = 'en-US';
-        
-        recognition.onresult = function(event) {
-            const command = event.results[0][0].transcript.toLowerCase();
-            
-            if (command.includes('home')) {
-                showPage('home');
-            } else if (command.includes('papers') || command.includes('research')) {
-                showPage('papers');
-            } else if (command.includes('ai') || command.includes('economics')) {
-                showPage('ai-economics');
-            } else if (command.includes('about')) {
-                showPage('research');
-            }
-        };
-        
-        // Add voice activation button
-        const voiceBtn = document.createElement('button');
-        voiceBtn.innerHTML = '🎤';
-        voiceBtn.style.cssText = `
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: var(--color-primary);
-            color: white;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            z-index: 1000;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        `;
-        
-        voiceBtn.addEventListener('click', () => {
-            recognition.start();
-        });
-        
-        document.body.appendChild(voiceBtn);
-    }
-}
-
-// Performance optimizations
-function optimizePerformance() {
-    // Lazy load images
-    const images = document.querySelectorAll('img[data-src]');
-    const imageObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.classList.remove('lazy');
-                imageObserver.unobserve(img);
-            }
-        });
-    });
-    
-    images.forEach(img => imageObserver.observe(img));
-    
-    // Throttle resize events
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => {
-            // Handle resize
-            if (currentChart) {
-                currentChart.resize();
-            }
-        }, 250);
-    });
-}
-
-// Initialize enhanced features
-document.addEventListener('DOMContentLoaded', function() {
+    // Add pulsing animation
+    metricCube.style.animation = 'cube-pulse 1s ease-in-out';
     setTimeout(() => {
-        addEnhancedAnimations();
-        initializeVoiceNavigation();
-        optimizePerformance();
+      metricCube.style.animation = '';
     }, 1000);
-});
-
-// Keyboard shortcuts
-document.addEventListener('keydown', function(e) {
-    if (e.altKey) {
-        switch(e.key) {
-            case '1':
-                showPage('home');
-                break;
-            case '2':
-                showPage('papers');
-                break;
-            case '3':
-                showPage('ai-economics');
-                break;
-            case '4':
-                showPage('research');
-                break;
-            case 't':
-                toggleTheme();
-                break;
-        }
-    }
-});
-
-// Touch gestures for mobile
-let touchStartX = 0;
-let touchStartY = 0;
-
-document.addEventListener('touchstart', function(e) {
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-});
-
-document.addEventListener('touchend', function(e) {
-    const touchEndX = e.changedTouches[0].clientX;
-    const touchEndY = e.changedTouches[0].clientY;
-    
-    const deltaX = touchEndX - touchStartX;
-    const deltaY = touchEndY - touchStartY;
-    
-    // Swipe gestures
-    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
-        if (deltaX > 0) {
-            // Swipe right - previous page
-            navigatePages(-1);
-        } else {
-            // Swipe left - next page
-            navigatePages(1);
-        }
-    }
-});
-
-function navigatePages(direction) {
-    const pages = ['home', 'papers', 'ai-economics', 'research'];
-    const currentIndex = pages.indexOf(currentPage);
-    let newIndex = currentIndex + direction;
-    
-    if (newIndex < 0) newIndex = pages.length - 1;
-    if (newIndex >= pages.length) newIndex = 0;
-    
-    showPage(pages[newIndex]);
+  }
 }
 
-// Error handling
-window.addEventListener('error', function(e) {
-    console.error('Application error:', e.error);
-    // You could show a user-friendly error message here
-});
+// Generate 4D Policy Results
+function generate4DPolicyResults(container, policyType, magnitude) {
+  const shortTermChart = container.querySelector('.result-card:first-child .impact-chart');
+  const longTermChart = container.querySelector('.result-card:last-child .impact-chart');
+  
+  if (shortTermChart && longTermChart) {
+    generateMiniChart(shortTermChart, 'short-term', magnitude);
+    generateMiniChart(longTermChart, 'long-term', magnitude);
+  }
+  
+  // Add temporal animation
+  container.classList.add('results-materializing');
+  setTimeout(() => {
+    container.classList.remove('results-materializing');
+  }, 1000);
+}
 
-// Accessibility improvements
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Tab') {
-        document.body.classList.add('keyboard-navigation');
+// Generate Mini Charts
+function generateMiniChart(container, type, magnitude) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 150;
+  canvas.height = 80;
+  container.appendChild(canvas);
+  
+  const ctx = canvas.getContext('2d');
+  const data = [];
+  
+  // Generate data based on type and magnitude
+  const periods = type === 'short-term' ? 6 : 24;
+  const baseEffect = parseFloat(magnitude);
+  
+  for (let i = 0; i < periods; i++) {
+    let effect = baseEffect;
+    if (type === 'short-term') {
+      effect *= Math.exp(-i * 0.2); // Decay for short-term
+    } else {
+      effect *= (1 - Math.exp(-i * 0.1)); // Growth for long-term
     }
-});
+    effect += (Math.random() - 0.5) * 0.5; // Add noise
+    data.push(effect);
+  }
+  
+  // Draw chart
+  ctx.strokeStyle = type === 'short-term' ? '#e74c3c' : '#2ecc71';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  
+  data.forEach((value, index) => {
+    const x = (index / (periods - 1)) * canvas.width;
+    const y = canvas.height / 2 - (value / Math.max(...data.map(Math.abs))) * (canvas.height / 3);
+    
+    if (index === 0) {
+      ctx.moveTo(x, y);
+    } else {
+      ctx.lineTo(x, y);
+    }
+  });
+  
+  ctx.stroke();
+  
+  // Draw zero line
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(0, canvas.height / 2);
+  ctx.lineTo(canvas.width, canvas.height / 2);
+  ctx.stroke();
+}
 
-document.addEventListener('mousedown', function() {
-    document.body.classList.remove('keyboard-navigation');
-});
+// Enhanced Page Transitions with 4D Effects
+function showPage(pageId) {
+  // Hide all pages with 4D transition
+  pages.forEach(page => {
+    page.classList.add('page-exiting');
+    setTimeout(() => {
+      page.classList.remove('active', 'page-exiting');
+    }, 300);
+  });
+  
+  // Show selected page with 4D entrance
+  const targetPage = document.getElementById(pageId);
+  if (targetPage) {
+    setTimeout(() => {
+      targetPage.classList.add('active', 'page-entering');
+      currentPage = pageId;
+      
+      // Initialize page-specific 4D effects
+      if (pageId === 'ai-implementation') {
+        initializeAITools();
+        initializeNeuralNetworkBackground();
+      }
+      
+      setTimeout(() => {
+        targetPage.classList.remove('page-entering');
+      }, 600);
+    }, 300);
+  }
+  
+  // Update navigation with depth effects
+  navLinks.forEach(link => {
+    link.classList.remove('active');
+    if (link.getAttribute('data-page') === pageId) {
+      link.classList.add('active');
+    }
+  });
+  
+  // Smooth scroll to top with easing
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
-// Export for global access
-window.AIEconomicsApp = {
-    showPage,
-    toggleTheme,
-    currentPage: () => currentPage,
-    filteredData: () => filteredData
-};
+// Neural Network Background for AI Page
+function initializeNeuralNetworkBackground() {
+  const canvas = document.getElementById('neural-network-canvas');
+  if (!canvas) return;
+  
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  
+  const nodes = [];
+  const connections = [];
+  
+  // Create neural network nodes
+  for (let i = 0; i < 50; i++) {
+    nodes.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.2,
+      vy: (Math.random() - 0.5) * 0.2,
+      activity: Math.random()
+    });
+  }
+  
+  // Create connections
+  nodes.forEach((node, i) => {
+    nodes.forEach((otherNode, j) => {
+      if (i !== j && Math.random() < 0.1) {
+        connections.push({ from: i, to: j, strength: Math.random() });
+      }
+    });
+  });
+  
+  function animateNetwork() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Update nodes
+    nodes.forEach(node => {
+      node.x += node.vx;
+      node.y += node.vy;
+      node.activity = (node.activity + Math.random() * 0.1) % 1;
+      
+      // Bounce off edges
+      if (node.x < 0 || node.x > canvas.width) node.vx *= -1;
+      if (node.y < 0 || node.y > canvas.height) node.vy *= -1;
+    });
+    
+    // Draw connections
+    connections.forEach(conn => {
+      const fromNode = nodes[conn.from];
+      const toNode = nodes[conn.to];
+      
+      ctx.beginPath();
+      ctx.moveTo(fromNode.x, fromNode.y);
+      ctx.lineTo(toNode.x, toNode.y);
+      ctx.strokeStyle = `rgba(33, 128, 141, ${conn.strength * 0.3})`;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    });
+    
+    // Draw nodes
+    nodes.forEach(node => {
+      ctx.beginPath();
+      ctx.arc(node.x, node.y, 3 + node.activity * 2, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(33, 128, 141, ${0.5 + node.activity * 0.5})`;
+      ctx.fill();
+    });
+    
+    requestAnimationFrame(animateNetwork);
+  }
+  
+  animateNetwork();
+}
+
+// Export functions for global access
+window.showPage = showPage;
+window.toggleTheme = toggleTheme;
+window.initializeAITools = initializeAITools;
